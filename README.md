@@ -1,6 +1,8 @@
 # 위키동산
 ![Title](/src/title.png "Title")
 
+![Demo](/src/demo.gif "Demo")
+
 ![builtbydev](https://camo.githubusercontent.com/40f6e06565023f14c6cb7a60088f64ec4d01418d44ceedb80a1848e8365dfbe1/687474703a2f2f466f7254686542616467652e636f6d2f696d616765732f6261646765732f6275696c742d62792d646576656c6f706572732e737667)
 
 ## 📜 Project Overview
