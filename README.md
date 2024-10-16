@@ -23,6 +23,9 @@
 - 요약
 - 채팅
 
+### Service Pipeline and LLM Usage
+![Overview](/src/overview.jpg "Overview")
+
 ## 🏘 Project Architecture
 ![Project Architecture](/src/project_architecture.jpg "Project Architecture")
 <details>
