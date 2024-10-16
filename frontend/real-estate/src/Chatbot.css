@@ -1,0 +1,146 @@
+/* Chatbot.css */
+.chatbot-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.chatbot-icon {
+  background-color: #EDEDFE;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 24px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chatbot-icon img{
+    width:40px;
+}
+
+.chatbot-popup {
+  width: 500px;
+  height: 600px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.chatbot-header {
+  background-color: #867AFF;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px 10px 0 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+
+.chatbot-body {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  flex: 1;
+  overflow-y: auto;
+  background-color: #fff;
+}
+
+.message {
+  /* margin: 10px 0; */
+  padding: 10px;
+  border-radius: 5px;
+  max-width: 80%;
+}
+
+.user-message {
+  background-color: #e1ffc7;
+  color: #333;
+  margin: 20px 0;
+}
+
+.bot-message {
+  background-color: #EDEDFE;
+  align-self: flex-start;
+  color: #333;
+}
+
+.chatbot-input {
+  display: flex;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 0 0 10px 10px;
+}
+
+.chatbot-input input {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  align-items: flex-end;
+}
+
+.chatbot-input button {
+  background-color: #EDEDFE;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  margin-left: 10px;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.loader {
+    text-align: center;
+    font-size: 16px;
+    animation: blink 1s infinite; /* 깜빡이는 애니메이션 */
+  }
+  
+  @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  .chatbot-popup.minimized {
+    height: auto;
+  }
+  
+  .chatbot-popup.minimized .chatbot-header {
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  .chatbot-header {
+    cursor: pointer;
+  }
+  
+  .close-btn {
+    z-index: 10;
+  }
+  .chatbot-input textarea {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    resize: none;
+    min-height: 40px;
+    max-height: 150px;
+    overflow-y: auto;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: 1.5;
+  }

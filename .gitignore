@@ -1,2 +1,3 @@
 backend/app/config.py
 backend/data/*
+frontend/real-estate/public/image/*
