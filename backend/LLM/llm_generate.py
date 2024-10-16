@@ -15,14 +15,15 @@ llm = ChatUpstage(model="solar-1-mini-chat")
 
 # label 설명 dictionary
 label_descriptions = {
-    "0": "환경(단지, 조경)",
-    "1": "커뮤니티",
-    "2": "동별 특징",
-    "3": "주변 상권",
-    "4": "교통",
-    "5": "학군",
-    "6": "소음",
-    "7": "주차"
+    "1": "환경(단지, 조경)",
+    "2": "커뮤니티",
+    "3": "동별 특징",
+    "4": "주변 상권",
+    "5": "교통",
+    "6": "학군",
+    "7": "소음",
+    "8": "주차",
+    "9": "복합적"
 }
 
 
@@ -34,7 +35,7 @@ base_output_dir = "./summary"
 few_shot_prompt_template = ChatPromptTemplate.from_messages([
     (
         "system",
-        "You are an expert in analyzing and summarizing user reviews related to apartment living environments. You should prioritize information related to residential environment, community facilities, and overall living experience, and avoid any biased or overly subjective statements. All summaries must be provided in Korean."
+        "You are an expert in analyzing and summarizing user reviews related to apartment living environments. Take a step-by-step approach to analyze the reviews. Start by identifying and prioritizing information related specifically to residential comments. Then, carefully categorize the remaining content by relevant topics. For each category, extract the key points and provide a concise summary that highlights the most important aspects. All summaries must be provided in Korean."
     ),
      (
         "user",
@@ -45,9 +46,9 @@ few_shot_prompt_template = ChatPromptTemplate.from_messages([
         [Context]
         Summarize the reviews below in a detailed and comprehensive manner, focusing on key points related to '환경(단지, 조경)', using a professional and neutral tone to aggregate the opinions, highlighting important features and general sentiments expressed in the reviews in more than 9 sentences to ensure all perspectives and nuances are adequately captured. Do not make a newline or line break.
 
-        Reviews: '단지 내 조경이 매우 잘 되어 있어 사계절 내내 아름다운 풍경을 즐길 수 있습니다. 산책로가 단지 곳곳에 있어 자연을 느끼며 여유로운 산책을 즐기기 좋습니다. 봄에는 벚꽃이 만개하고 가을에는 단풍이 물들어 계절의 변화를 가까이에서 느낄 수 있습니다. 작은 공원과 정원이 단지 내 여러 곳에 자리 잡고 있어 아이들이 뛰어놀기에 안전합니다. 나무와 잔디가 잘 어우러져 있어 산책이나 운동을 하기에 매우 좋은 환경입니다. 아파트 내 조경이 마치 도심 속 작은 숲처럼 조성되어 있어 매우 쾌적합니다. 밤에는 조명이 아름답게 들어와 산책할 때 더욱 로맨틱한 분위기를 자아냅니다. 꽃과 나무가 어우러진 산책로는 입주민들이 함께 걷기에도 좋은 공간입니다. 단지 내 산책로와 벤치가 잘 정비되어 있어 이웃들과 자연스럽게 대화 나누기 좋습니다. 여름철에도 단지 내 그늘이 많아 시원하고 쾌적한 환경을 제공합니다. 아파트 정문 앞에 위치한 커다란 나무가 이 단지의 상징으로 자리 잡고 있습니다. 물이 흐르는 작은 연못이 있어 거주민들의 휴식 공간으로 인기가 높습니다. 아이들이 뛰어놀 수 있는 넓은 잔디밭이 있어 가족 단위로 생활하기에 좋습니다. 단지 내 다양한 나무와 꽃들이 심어져 있어 마치 작은 식물원을 연상케 합니다. 특히 여름철 단지 내 나무에서 들리는 새소리는 도심 속에서 느낄 수 없는 매력을 선사합니다. 산책로를 따라 조명이 설치되어 있어 저녁 산책이나 운동도 안전하게 할 수 있습니다. 단지 내 정원이 매우 정갈하게 관리되어 있어 항상 깨끗하고 쾌적한 느낌을 줍니다. 가을에는 단풍이 물들어 아름다운 단지 전경을 볼 수 있어 입주민들 사이에서 큰 호응을 얻고 있습니다. 단지 내에 꽃길이 조성되어 있어 봄이면 각종 꽃들이 만개하여 경관이 아름답습니다. 아파트를 둘러싼 나무들이 많아 도심 속에서도 자연과 함께 생활하는 기분을 느낄 수 있습니다.'
+        Reviews:\n{Review_ref1}
 
-        Summary: '해당 아파트 단지는 조경이 잘 되어 있어 입주민들이 자연을 느끼며 생활하기에 매우 적합합니다. 단지 내에는 다양한 산책로와 휴식 공간이 마련되어 있어, 계절에 따라 변하는 아름다운 풍경을 즐길 수 있습니다. 특히 봄에는 벚꽃이 만개하여 산책로가 매우 아름다우며, 여름에는 푸른 나무들이 그늘을 제공해 쾌적한 환경을 유지합니다. 또한, 단지 내 작은 공원들이 곳곳에 있어 아이들이 안전하게 뛰어놀 수 있는 공간이 많습니다. 이러한 조경시설은 단지 내 거주민들의 만족도를 높이며, 이웃 간의 교류도 활발하게 이루어지게 합니다. 산책이나 운동을 좋아하는 사람들에게 특히 좋은 환경으로, 도심 속에서도 자연과 함께하는 생활을 할 수 있어 거주 만족도가 높습니다.'
+        Summary: '조경이 아주 훌륭하고, 10년차가 넘어 나무가 무성해져 숲이나 공원으로 느껴져 출퇴근할때 기분이 좋습니다. 조경과 하늘가람 근린공원과, 온조마루 근린공원이 연결되어 있어 조경이 왠만한 공원 보다 좋습니다. 특히 보기 드문 평지 아파트에 중앙 통로가 있는 단지 모양이라 유모차를 끌고 산책하거나, 자전거 타기 좋습니다. 또 중통의 좋은 점은 밤 늦게 걸어도 무섭지 않다는 장점을 가지고 있습니다. 성내천 한강 그리고 올림픽공원과 매우 인접하여 다양한 산책 코스를 즐길 수 있습니다. 조금만 더 걸으면 롯데타워 지나서 석촌호수에서 운동할 수 있습니다. '
         """
     ),
     (
@@ -58,11 +59,91 @@ few_shot_prompt_template = ChatPromptTemplate.from_messages([
 
         [Context]
         Summarize the reviews below in a detailed and comprehensive manner, focusing on key points related to '커뮤니티', using a professional and neutral tone to aggregate the opinions, highlighting important features and general sentiments expressed in the reviews in more than 9 sentences to ensure all perspectives and nuances are adequately captured. Do not make a newline or line break.
-        Reviews: '단지 내 커뮤니티 센터에 수영장과 헬스장이 잘 갖추어져 있어 운동을 좋아하는 사람들에게 좋습니다. 커뮤니티 센터에서는 다양한 문화 프로그램을 운영해 입주민 간 교류가 활발히 이루어집니다. 입주민들만 이용할 수 있는 카페와 독서실이 마련되어 있어 휴식과 학습 모두 가능한 공간입니다. 자녀들을 위한 키즈카페와 도서관이 단지 내에 있어 아이들이 놀면서 공부할 수 있는 환경입니다. 주말마다 열리는 요가 강좌와 문화교실이 인기가 많아 많은 입주민들이 참여하고 있습니다. 커뮤니티 센터 내 수영장은 어른과 아이 모두 이용할 수 있어 가족 단위로 오기 좋습니다. 매월 커뮤니티 내에서 열리는 플리마켓은 입주민들이 서로 교류할 수 있는 기회를 제공합니다. 입주민 전용 영화관이 있어 주말 저녁에 가족끼리 영화 보기에 좋습니다. 단지 내에 여러 개의 헬스장이 분산되어 있어 운동할 때 혼잡하지 않고 쾌적합니다. 커뮤니티 내 스터디 룸이 있어 학생들이 조용히 공부할 수 있는 공간이 마련되어 있습니다. 주민 커뮤니티 모임이 활성화되어 있어 새로운 입주민도 쉽게 이웃들과 친해질 수 있습니다. 입주민들을 위한 무료 강좌가 주기적으로 열려 다양한 취미를 가질 수 있습니다. 커뮤니티 내 테니스장과 골프 연습장이 있어 스포츠를 즐기기 좋아요. 입주민 전용 카페테리아가 있어 이웃들과 가볍게 커피를 마시며 대화하기 좋습니다. 아이들을 위한 놀이방과 어르신들을 위한 휴식 공간이 분리되어 있어 편리합니다. 단지 내 피트니스 센터가 최신식 장비로 잘 갖추어져 있어 운동을 즐기기 좋습니다. 커뮤니티 센터 내 독서실은 조용하고 깔끔하게 관리되어 있어 학생들 사이에서 인기가 높습니다. 단지 내 주민들의 건의사항을 반영해 지속적으로 커뮤니티 시설이 개선되고 있습니다. 주민들이 함께 참여할 수 있는 다양한 체육대회와 이벤트가 주기적으로 열려 단합이 잘 됩니다. 어린 자녀들을 위한 미술 교실과 음악 교실이 운영되어 자녀 교육에도 도움이 됩니다.'
+        Reviews:\n{Review_ref2}
+'
 
-        Summary: '단지 내 커뮤니티 시설은 다양한 연령대가 이용할 수 있도록 잘 갖추어져 있습니다. 수영장, 헬스장, 골프 연습장 등 다양한 운동 시설이 있어 건강한 생활을 도모할 수 있으며, 아이들을 위한 놀이터도 곳곳에 마련되어 있어 자녀를 키우는 가정에게 적합합니다. 또한, 커뮤니티 센터에서는 다양한 문화 프로그램과 주민 대상의 강좌도 운영되어 입주민 간 교류와 정보 공유의 장이 되고 있습니다. 독서실과 카페 같은 공간도 있어 학업이나 업무에 집중할 수 있는 장소로도 활용할 수 있습니다. 이러한 커뮤니티 시설은 주민들의 삶의 질을 높이며, 자주 이용하는 입주민들 사이에 친밀감을 형성하는데도 도움이 됩니다.'
+        Summary: '1단지 2단지 모두 헬스장, GX강의실이 존재합니다. 2단지 커뮤니티의 경우 210동과 211동 사이에 위치해 있으며, 골프연습장의 경우 1단지에만 존재합니다. 세대수에 비해 골프 연습할 수 있는 곳이 부족하여 기다리는 경우가 많습니다. 아이들 교육을 위한 아이두레터는 유아, 초등, 성인 클래스가 다양하게 존재하며, 성인들을 위한 수업인 성인영어회화, 오카리나 등 다양한 프로그램이 존재합니다. 피트니스 센터는 한달 이용요금이 3만원이고, 관리비에 고지되어 나옵니다.'
         """
     ),
+    (
+        "user",
+        """
+        [Instruction]
+        You are a helpful assistant that summarizes and provides comprehensive insights based on user reviews about various aspects of an apartment complex. The reviews are categorized into topics such as environment, community, or transportation. Your task is to summarize these reviews to provide clear and concise information related to the topic of '{label_description}'.
+
+        [Context]
+        Summarize the reviews below in a detailed and comprehensive manner, focusing on key points related to '동별 특징', using a professional and neutral tone to aggregate the opinions, highlighting important features and general sentiments expressed in the reviews in more than 9 sentences to ensure all perspectives and nuances are adequately captured. Do not make a newline or line break.
+        Reviews:\n{Review_ref3}
+
+        Summary: '33평 C타입의 경우 4베이에 남동 남서향이라 채광좋고 겨울에 엄청 따뜻합니다. 부엌 다용도실도 바닥까지 내려오는 큰 창문이라 생선고기 냄새나는 것들은 간편하게 처리가능하고, 빨래도 잘 마릅니다. 또한 햇빛이 잘 들고 통풍도 잘 됩니다. 26평형의 경우에도 광폭 발코니에 확장까지해서 요즘 신축 아파트 30평의 느낌이나고, 마찬가지로 32평 같은 경우에도 신축 40평대 느낌이 날 정도로 넓습니다. 성내천 라인의 1호 4호 중층 이상의 작은방 2개는 모두 한강뷰 나옵니다. 213동 1호라인인데 해가 거의 안들고 외풍이 심해 추운 단점이 있습니다. 3단지 고층 거실에서는 롯데타워 뷰가 나오고, 1단지 B타입중에는 한강뷰 나오는 타입도 있습니다.  3단지의 일부 매물은 올림픽 파크뷰와 롯데타워뷰가 보입니다. '
+        """
+    ),
+    (
+        "user",
+        """
+        [Instruction]
+        You are a helpful assistant that summarizes and provides comprehensive insights based on user reviews about various aspects of an apartment complex. The reviews are categorized into topics such as environment, community, or transportation. Your task is to summarize these reviews to provide clear and concise information related to the topic of '{label_description}'.
+
+        [Context]
+        Summarize the reviews below in a detailed and comprehensive manner, focusing on key points related to '주변 상권', using a professional and neutral tone to aggregate the opinions, highlighting important features and general sentiments expressed in the reviews in more than 9 sentences to ensure all perspectives and nuances are adequately captured. Do not make a newline or line break.
+        Reviews:\n{Review_ref4}
+'
+
+        Summary: '바로 앞에 롯데타워가 있어서 장보러가거나 쇼핑하러가기 좋으며, 주변 신축아파트가 많아 상가 이용, 바로 앞에 아산 병원 인프라를 이용할 수 있습니다. 조금만 더 걸으면 송리단길이 위치해있습니다. 파크리오 바로 앞에 잠실4동 동사무소가 있어 편리하며 A상가에 롯데슈퍼, B상가에 GS슈퍼가 있어 도보로 이용하고 있고, 좀 많이 사려면 홈플러스, 롯데몰마트를 이용합니다. 방이 유흥가에서 멀어 애들 키우기 좋습니다. '
+        """
+    ),
+    (
+        "user",
+        """
+        [Instruction]
+        You are a helpful assistant that summarizes and provides comprehensive insights based on user reviews about various aspects of an apartment complex. The reviews are categorized into topics such as environment, community, or transportation. Your task is to summarize these reviews to provide clear and concise information related to the topic of '{label_description}'.
+
+        [Context]
+        Summarize the reviews below in a detailed and comprehensive manner, focusing on key points related to '교통', using a professional and neutral tone to aggregate the opinions, highlighting important features and general sentiments expressed in the reviews in more than 9 sentences to ensure all perspectives and nuances are adequately captured. Do not make a newline or line break.
+        Reviews:\n{Review_ref5}
+
+        Summary: '대치동까지 자차로 20분 걸립니다. 또한 올림픽 대로가 바로 앞에 있어 교통이 편하고, 모든동에서 지하로 10분 이내에 지하철역에 갈 수 있습니다. 2호선 8호선이 메인으로 이용할 수 있으며 소마 미술관쪽으로 가로질러가면 9호선이 있어서 편한 호선을 골라탈 수 있으며, 아파트에 3개의 버스정류장이 있습니다. 잠실나루역 3번출구(장미아파트쪽)에서 80미터거리(도보1분)에 택시들이 많이 있습니다. 잠실역에 가까워 늘 교통량이 많아 출퇴근시간대에는 많이 막히는 단점을 가지고 있습니다.'
+        """
+    ),
+    (
+        "user",
+        """
+        [Instruction]
+        You are a helpful assistant that summarizes and provides comprehensive insights based on user reviews about various aspects of an apartment complex. The reviews are categorized into topics such as environment, community, or transportation. Your task is to summarize these reviews to provide clear and concise information related to the topic of '{label_description}'.
+
+        [Context]
+        Summarize the reviews below in a detailed and comprehensive manner, focusing on key points related to '학군', using a professional and neutral tone to aggregate the opinions, highlighting important features and general sentiments expressed in the reviews in more than 9 sentences to ensure all perspectives and nuances are adequately captured. Do not make a newline or line break.
+        Reviews:\n{Review_ref6}
+
+        Summary: '단지내 초등학교가 잠실초와 잠현초 2개 있어 영유아, 초등학생 양육환경이 매우 우수합니다. 상가에 하구언이 많아 초등학생까지는 좋으나, 중학생때부터는 애매합니다. 이후 학원의 경우 대치동으로 많이 다니며 대치동으로 픽업 다닐 경우 20분정도의 시간이 소요됩니다. 남아의 경우 학군이 괜찮으나, 여아의 경우 중학교와 고등학교가 애매합니다. 여아들은 잠실중 – 한대부고(자사고) 다니며 특히 한대부고는 통학버스가 다닙니다. '
+        """
+    ),
+    (
+        "user",
+        """
+        [Instruction]
+        You are a helpful assistant that summarizes and provides comprehensive insights based on user reviews about various aspects of an apartment complex. The reviews are categorized into topics such as environment, community, or transportation. Your task is to summarize these reviews to provide clear and concise information related to the topic of '{label_description}'.
+
+        [Context]
+        Summarize the reviews below in a detailed and comprehensive manner, focusing on key points related to '소음', using a professional and neutral tone to aggregate the opinions, highlighting important features and general sentiments expressed in the reviews in more than 9 sentences to ensure all perspectives and nuances are adequately captured. Do not make a newline or line break.
+        Reviews:\n{Review_ref7}
+
+        Summary: '1단지 옆으로 2호선 지상철이 다녀 소음이 발생합니다. 특히 2호선의 경우 지하철 주기가 짧아 예민할 경우 조금 스트레스를 받을 수 있습니다. 지상철에 인접한 105동의 3호 4호 라인의 경우 창문 열면 잘 들립니다. 그러나 거실문 닫으면 하나도 안들립니다. 1호 2호라인은 전혀 안들리고, 고층으로 올라갈 경우 잘 안들립니다. 1단지 2단지 바깥쪽을 제외하고는 거슬리는 수준은 아닙니다. 층간소음때문에 싸우는 경우가 많으며, 특히 화장실의 경우 윗집의 물내리는 소리가 다 들립니다. 벽식 구조에다 슬래브도 얇아서 층간 소음이 다른 아파트보다 잘 들리는 편입니다.'
+        """
+    ),
+    (
+        "user",
+        """
+        [Instruction]
+        You are a helpful assistant that summarizes and provides comprehensive insights based on user reviews about various aspects of an apartment complex. The reviews are categorized into topics such as environment, community, or transportation. Your task is to summarize these reviews to provide clear and concise information related to the topic of '{label_description}'.
+
+        [Context]
+        Summarize the reviews below in a detailed and comprehensive manner, focusing on key points related to '주차', using a professional and neutral tone to aggregate the opinions, highlighting important features and general sentiments expressed in the reviews in more than 9 sentences to ensure all perspectives and nuances are adequately captured. Do not make a newline or line break.
+        Reviews:\n{Review_ref8}
+
+        Summary: '저녁에는 조명이 어두워 각 동이 어디에 있는지 찾기가 힘듭니다. 1단지 2단지 3단지의 건설사가 달라서 지하주차장이 모두 연결되어있지 않습니다. 15년차가 넘은 준 신축 아파트이지만, 전기차 충전구역이 있고 추가적으로 한동당 2개정도의 컨센트 형식의 충전기가 있지만, 일반 차량이 주차하면 충전을 조금 힘들 수 있습니다. 세대당 1.4대 정도로 연식 대비 주차장은 넓고 좋습니다. 특히 동 근처 지하 1~2층에 항상 주차 가능하고, 주차장에서 엘리베이터가 자동으로 호출됩니다.'
+        """
+    ),            
     (
         "user",
         """
@@ -99,14 +180,14 @@ for complex_name in os.listdir(base_input_dir):
             label_path = os.path.join(complex_input_dir, label_file)
             try:
                 # CSV 파일 읽기
-                data = pd.read_csv(label_path, sep=',', quotechar='"', on_bad_lines='skip')
+                data = pd.read_csv(label_path, sep=',', quotechar='"', error_bad_lines=False)
 
                 # 파일 이름에서 라벨 번호 추출
                 label = label_file.split("_")[-1].split(".")[0]
                 label_description = label_descriptions.get(label, "기타")  # label 설명 가져오기
 
-                # "text" 열의 모든 텍스트를 결합
-                combined_text = " ".join(data["text"].astype(str).tolist())
+                # "Review" 열의 모든 텍스트를 결합
+                combined_text = " ".join(data["Review"].astype(str).tolist())
 
                 # 템플릿, LLM, 파서를 사용하여 체인 생성
                 chain = few_shot_prompt_template | llm | StrOutputParser()
@@ -116,8 +197,8 @@ for complex_name in os.listdir(base_input_dir):
                     "label": label,
                     "combined_text": combined_text,
                     "label_description": label_description,
-                    "temperature": 0.25,  # 낮추면 robust, 높이면 창의력이라 생각하면 됨
-                    "top_p": 0.85         # temp로 만든 확률을 어디까지 고려할지
+                    "temperature": 0.7,  # 낮추면 robust, 높이면 창의력이라 생각하면 됨
+                    "top_p": 0.7         # temp로 만든 확률을 어디까지 고려할지
                 })
 
                 # 요약 결과를 출력 디렉토리에 저장
@@ -126,6 +207,11 @@ for complex_name in os.listdir(base_input_dir):
                     f.write(summary)
 
                 print(f"Label {label}번에 대한 요약이 {output_file}에 저장되었습니다.")
+
+            except Exception as e:
+                print(f"파일 {label_file} 처리 중 오류 발생: {e}")
+
+
 
             except Exception as e:
                 print(f"파일 {label_file} 처리 중 오류 발생: {e}")
