@@ -23,8 +23,11 @@
 - 요약
 - 채팅
 
-### Service Pipeline and LLM Usage
+## 🏅 Service Pipeline and LLM Usage
 ![Overview](/src/overview.jpg "Overview")
+
+### 🤖 Chatbot
+![Chatbot](/src/chatbot.jpg "Chatbot")
 
 ## 🏘 Project Architecture
 ![Project Architecture](/src/project_architecture.jpg "Project Architecture")
