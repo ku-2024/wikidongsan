@@ -10,12 +10,12 @@
 
 > ‘위키’피디아 + 부‘동산’ 합성어로 아파트 실거주자들의 후기를 모아서 한 눈에 볼 수 있는 서비스
 
-[프로젝트 데모 영상](https://www.youtube.com/watch?v=ReRWocARLd8)
+[프로젝트 데모 영상](https://www.youtube.com/watch?v=QgpLPV7MiKw)
 
 ### 🎯 Objective
 - 효율적인 리뷰 데이터 수집
 - LLM을 활용한 리뷰 분류 및 요약
-- 채팅을 통한 맞춤형 경험 제공
+- 원활한 후기 탐방을 위해 LLM을 활용한 챗봇 (RAG 기반)
 
 > 다양한 소스에서 수집한 리뷰를 하나로 모으고 분류하여, 믿을 수 있고 요약된 정보 제공
 
@@ -33,8 +33,8 @@
 
 ## 🏘 Project Architecture
 ![Project Architecture](/src/project_architecture.jpg "Project Architecture")
-<details>
-  <summary>Frontend</summary>
+
+### Frontend
 
   1. **첫 번째 페이지 (검색 페이지)**
   - 아파트에 대한 검색을 하면, 검색어가 포함된 아파트 목록을 보여줍니다. 예를 들어 “아이빌“이라는 단어를 검색하면, “아이빌“이 포함된 아파트들을 보여줍니다. 원하는 아파트 카드의 “더 보기” 버튼을 클릭하면, 해당 아파트의 설명 페이지로 이동합니다.
@@ -42,10 +42,8 @@
   2. **두 번째 페이지 (설명 페이지)**
   - 설명 페이지에서는 아파트의 이름, 주소, 세대수, 완공일과 같은 기본 정보를 확인할 수 있고, 각 평수에 대한 가격 정보도 제공됩니다. 페이지를 아래로 스크롤하면 8개의 카테고리로 LLM이 요약한 리뷰를 볼 수 있고, 사이드바에 있는 카테고리 버튼을 클릭하면 해당 카테고리를 쉽게 확인할 수 있습니다. 채팅창에서 AI 챗봇과 질문을 주고 받으며 도움을 받을 수 있습니다. 마지막으로, 위키동산 아이콘을 클릭하면 처음 검색 화면으로 돌아갑니다.
   
-</details>
 
-<details>
-  <summary>Backend</summary>
+### Backend
   
   1. **데이터 크롤링**
   - BeautifulSoup4와 Requests를 사용하여 웹에서 아파트 정보 수집
@@ -63,7 +61,6 @@
   - SQLAlchemy를 통한 데이터베이스 CRUD 작업 수행
   - 비동기 데이터베이스 세션을 활용한 효율적인 데이터 접근
     
-</details>
 
 ### LLM
   - Label 섞여있는 데이터 Label별로 process
@@ -87,6 +84,14 @@ yarn start
 ```
 
 ### Backend
+**Data 수집**
+```
+backend/data/
+backend/app/config.py
+```
+- data 폴더 위치에 CSV 형태의 파일 포함 필수
+- config 파일에 API Key 등 private 정보 정의
+
 **Docker로 MariaDB 설치**
 도커 설치
 ```
@@ -126,7 +131,6 @@ python llm_generate.py
 ## 🔥 Future Work
 - 데이터 실시간 업데이트: 새로 나오는 후기를 실시간으로 크롤링하여 LLM 모델 업데이트
 - 지도 API: 아파트 탐색 시, 지도를 보며 위치 정보도 함께 탐색하게
-- 챗봇: 원활한 후기 탐방을 위해 LLM을 활용한 챗봇 구현 및 성능 향상 (RAG 기반)
 - 평점: 웹페이지 중 도움이 된 부분 표시하여 모델에 human feedback 반영
 - 데이터 추가: 더 다양한 플랫폼으로부터 다량의 데이터 확보 예정
 
