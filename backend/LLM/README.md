@@ -1,4 +1,7 @@
 # LLM
+## 0. 크롤링된 데이터셋 label 분류
+
+process_label.py를 활용하여 label별로 리뷰 데이터셋 분류
 
 ## 1. 데이터셋 라벨 분류하기 (`process.py` 실행)
 
@@ -34,12 +37,20 @@
 
 ### 파라미터 변경
 - `summary = chain.invoke` 부분에서 `temperature`와 `top_p` 파라미터를 변경하여 조정 가능합니다.  
-  - **temperature**: 확률 함수 스무딩 (낮추면 창의성 낮아지고 일관성 올라감).  
+  - **temperature**: 확률 함수 스무딩 
   - **top_p**: `temperature`로 결정된 확률들 중 누적으로 몇 퍼센트 단어까지 고려할지 결정 (예: 0.9면 90% 확률 안에 들어가는 단어들까지 고려).
 
 ---
 
 ## 4. 결과 확인 및 수정
 
-- 생성된 요약문(`./summary/아파트이름/`)이 원하는 형태로 잘 생성되었는지 확인합니다.  
-- 요약문이 기대와 다른 경우, `#3`을 다시 체크하고 수정합니다.
+- 생성된 요약문(`./summary/아파트이름/`)이 원하는 형태로 잘 생성되었는지 확인합니다.
+
+
+## 기타
+
+- 비교를 위한 Baseline으로 `llm_baselines_generate`를 실행하면 vllm을 활용하여 Llama 3.1 , gemma2 모델에 대한 실험도 진행 가능합니다.
+- Context length가 제한되어 있어서 Llama와 gemma에는 few shot없이 세팅했습니다.
+
+ # Eval
+ - Eval의 경우 BLEU(sacrebleu), ROUGE, METEOR, BERTScore와 함께 G-Eval을 활용하였습니다.
